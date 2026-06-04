@@ -122,7 +122,7 @@ public class YellowBallTracker extends LinearOpMode {
                                                                 blobs);
 
 
-
+            // check if blobs found
             if (!blobs.isEmpty()) {
 
                 // Pick the largest blob as the primary target ball
@@ -157,14 +157,16 @@ public class YellowBallTracker extends LinearOpMode {
                 telemetry.addData("Blob Area",     target.getContourArea());
                 telemetry.addData("Blobs Found",    blobs.size() );
 
-            } else {
+            }
+            else {
+                //no blobs found
                 stopDrive();
                 telemetry.addData("Action",      "Searching — no yellow ball detected");
                 telemetry.addData("Blobs Found", 0);
             }
 
             telemetry.update();
-        }
+        }  // while loop
 
         // Cleanup
         stopDrive();
