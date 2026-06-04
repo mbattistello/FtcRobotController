@@ -41,7 +41,7 @@ public class YellowBallTracker extends LinearOpMode {
     private static final double CENTER_DEADBAND   = 25.0;
 
     /** Minimum blob contour area (px²) to consider a valid ball detection. */
-    private static final double MIN_BLOB_AREA     = 750.0;
+    private static final double MIN_BLOB_AREA     = 4000;  // orig 750
 
     /** Maximum blob area — rejects noise/huge false positives. */
     private static final double MAX_BLOB_AREA     = 80_000.0;
@@ -111,8 +111,17 @@ public class YellowBallTracker extends LinearOpMode {
 
             List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
 
+
+
+
             // Filter out blobs that are too small or too large
-            ColorBlobLocatorProcessor.Util.filterByArea(MIN_BLOB_AREA, MAX_BLOB_AREA, blobs);
+            //ColorBlobLocatorProcessor.Util.filterByArea(MIN_BLOB_AREA, MAX_BLOB_AREA, blobs);
+            ColorBlobLocatorProcessor.Util.filterByCriteria( ColorBlobLocatorProcessor.BlobCriteria.BY_CONTOUR_AREA,
+                                                                MIN_BLOB_AREA,
+                                                                MAX_BLOB_AREA,
+                                                                blobs);
+
+
 
             if (!blobs.isEmpty()) {
 
@@ -139,10 +148,14 @@ public class YellowBallTracker extends LinearOpMode {
                     telemetry.addData("Action", "✓ Centered on ball");
                 }
 
-                telemetry.addData("Ball Center X",  "%.1f px", ballCenterX);
-                telemetry.addData("Pixel Error",    "%.1f px", pixelError);
-                telemetry.addData("Blob Area",      "%.0f px²", target.getContourArea());
-                telemetry.addData("Blobs Found",    blobs.size());
+                //telemetry.addData("Ball Center X",  "%.1f px", ballCenterX);
+                //telemetry.addData("Pixel Error",    "%.1f px", pixelError);
+                //telemetry.addData("Blob Area",      "%.0f px²", target.getContourArea());
+
+                telemetry.addData("Ball Center X",   ballCenterX);
+                telemetry.addData("Pixel Error",   pixelError);
+                telemetry.addData("Blob Area",     target.getContourArea());
+                telemetry.addData("Blobs Found",    blobs.size() );
 
             } else {
                 stopDrive();
