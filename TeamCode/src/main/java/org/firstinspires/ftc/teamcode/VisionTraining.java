@@ -55,6 +55,14 @@ public class VisionTraining extends LinearOpMode {
         setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // --- Vision ---
+        // Format: ColorSpace, Min Channel 1, Min 2, Min 3, Max Channel 1, Max 2, Max 3
+        ColorRange pollen = new ColorRange(
+                ColorSpace.HSV,
+                new Scalar( 48.6, 79, 94),   // Minimum H, S, V values (0-255 scaled)
+                new Scalar( 47.3, 100, 87)   // Maximum H, S, V values (0-255 scaled)
+        );
+
+
         // https://ftc-docs.firstinspires.org/en/latest/color_processing/color-locator-explore/color-locator-explore.html
         colorLocator = new ColorBlobLocatorProcessor.Builder()
                 .setTargetColorRange(ColorRange.YELLOW)
