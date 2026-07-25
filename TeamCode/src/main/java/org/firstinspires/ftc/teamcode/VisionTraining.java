@@ -65,7 +65,7 @@ public class VisionTraining extends LinearOpMode {
 
         // https://ftc-docs.firstinspires.org/en/latest/color_processing/color-locator-explore/color-locator-explore.html
         colorLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(ColorRange.YELLOW)
+                .setTargetColorRange( pollen )
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
                 .setBlurSize(5)
                 //.setErodeSize(4)
