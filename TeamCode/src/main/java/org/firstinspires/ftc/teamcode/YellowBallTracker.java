@@ -79,7 +79,7 @@ public class YellowBallTracker extends LinearOpMode {
 
         // --- Vision Setup --------------------------------------------------
         colorLocator = new ColorBlobLocatorProcessor.Builder()
-                .setTargetColorRange(ColorRange.YELLOW)          // Target: yellow
+                .setTargetColorRange(ColorRange.GREEN)          // Target: ColorRange.YELLOW
                 .setContourMode(ColorBlobLocatorProcessor.ContourMode.EXTERNAL_ONLY)
                 .setBlurSize(5)                                   // Reduces false positives
                 .setDrawContours(true)                            // Overlay on DS preview
