@@ -8,13 +8,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.SortOrder;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
+import org.firstinspires.ftc.vision.opencv.ColorSpace;
 import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.core.RotatedRect;
+import org.opencv.core.Scalar;
 
 import java.util.Comparator;
 import java.util.List;
@@ -91,16 +94,16 @@ public class VisionTraining extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+        List<ColorBlobLocatorProcessor.Blob> blobs
+
         // =====================================================================
         // MAIN LOOP
         // =====================================================================
         while (opModeIsActive()) {
 
-            telemetry.addData("Status", "OpModeActive");
+            telemetry.addData("Status", "OpMode Active");
 
-
-
-            List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
+            blobs = colorLocator.getBlobs();
 
             // filter blob list
             //ColorBlobLocatorProcessor.Util.filterByArea(200, 20000, blobs);
@@ -121,9 +124,24 @@ public class VisionTraining extends LinearOpMode {
                     blobs
             );
 
+            // filter by circularity
+            ColorBlobLocatorProcessor.Util.filterByCriteria(
+                    ColorBlobLocatorProcessor.BlobCriteria.BY_CIRCULARITY,
+                    .75,
+                    1.25,
+                    blobs
+            );
+
 
             if (!blobs.isEmpty()) {
                 blobs.sort(Comparator.comparingDouble(ColorBlobLocatorProcessor.Blob::getContourArea).reversed());
+
+                // Sorts your blobs in descending order (roundest objects first)
+                ColorBlobLocatorProcessor.Util.sortByCriteria(
+                        ColorBlobLocatorProcessor.BlobCriteria.BY_CIRCULARITY,
+                        SortOrder.DESCENDING,
+                        blobs
+                );
 
                 RotatedRect box = blobs.get(0).getBoxFit();
 
